@@ -1,0 +1,73 @@
+package estructuras;
+
+import modelo.Aula;
+
+/**
+ * Arreglo estático de objetos Aula.
+ */
+public class ArregloAulas {
+    private Aula[] datos;
+    private int cantidad;
+
+    public ArregloAulas(int capacidad) {
+        datos = new Aula[capacidad];
+        cantidad = 0;
+    }
+
+    public boolean insertar(Aula aula) {
+        if (aula == null || cantidad == datos.length) {
+            return false;
+        }
+        if (buscar(aula.getCodigo()) != null) {
+            return false;
+        }
+        datos[cantidad] = aula;
+        cantidad++;
+        return true;
+    }
+
+    public boolean eliminar(String codigo) {
+        int pos = posicion(codigo);
+        if (pos == -1) {
+            return false;
+        }
+        for (int i = pos; i < cantidad - 1; i++) {
+            datos[i] = datos[i + 1];
+        }
+        datos[cantidad - 1] = null;
+        cantidad--;
+        return true;
+    }
+
+    public Aula buscar(String codigo) {
+        int pos = posicion(codigo);
+        if (pos == -1) {
+            return null;
+        }
+        return datos[pos];
+    }
+
+    private int posicion(String codigo) {
+        for (int i = 0; i < cantidad; i++) {
+            if (datos[i].getCodigo().equalsIgnoreCase(codigo)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Aula obtener(int indice) {
+        if (indice < 0 || indice >= cantidad) {
+            return null;
+        }
+        return datos[indice];
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public int getCapacidad() {
+        return datos.length;
+    }
+}
