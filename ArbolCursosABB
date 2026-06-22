@@ -1,0 +1,129 @@
+package estructuras;
+
+import modelo.Curso;
+
+/**
+ * Árbol Binario de Búsqueda para organizar cursos por código.
+ */
+public class ArbolCursosABB {
+    private NodoABB raiz;
+
+    private class NodoABB {
+        Curso curso;
+        NodoABB izquierda;
+        NodoABB derecha;
+
+        NodoABB(Curso curso) {
+            this.curso = curso;
+            this.izquierda = null;
+            this.derecha = null;
+        }
+    }
+
+    public ArbolCursosABB() {
+        raiz = null;
+    }
+
+    public boolean insertar(Curso curso) {
+        if (curso == null) {
+            return false;
+        }
+        if (raiz == null) {
+            raiz = new NodoABB(curso);
+            return true;
+        }
+        return insertarRecursivo(raiz, curso);
+    }
+
+    private boolean insertarRecursivo(NodoABB actual, Curso curso) {
+        int cmp = curso.getCodigo().compareToIgnoreCase(actual.curso.getCodigo());
+        if (cmp == 0) {
+            return false;
+        } else if (cmp < 0) {
+            if (actual.izquierda == null) {
+                actual.izquierda = new NodoABB(curso);
+                return true;
+            }
+            return insertarRecursivo(actual.izquierda, curso);
+        } else {
+            if (actual.derecha == null) {
+                actual.derecha = new NodoABB(curso);
+                return true;
+            }
+            return insertarRecursivo(actual.derecha, curso);
+        }
+    }
+
+    public Curso buscar(String codigo) {
+        return buscarRecursivo(raiz, codigo);
+    }
+
+    private Curso buscarRecursivo(NodoABB actual, String codigo) {
+        if (actual == null) {
+            return null;
+        }
+        int cmp = codigo.compareToIgnoreCase(actual.curso.getCodigo());
+        if (cmp == 0) {
+            return actual.curso;
+        } else if (cmp < 0) {
+            return buscarRecursivo(actual.izquierda, codigo);
+        } else {
+            return buscarRecursivo(actual.derecha, codigo);
+        }
+    }
+
+    public void eliminar(String codigo) {
+        raiz = eliminarRecursivo(raiz, codigo);
+    }
+
+    private NodoABB eliminarRecursivo(NodoABB actual, String codigo) {
+        if (actual == null) {
+            return null;
+        }
+        int cmp = codigo.compareToIgnoreCase(actual.curso.getCodigo());
+        if (cmp < 0) {
+            actual.izquierda = eliminarRecursivo(actual.izquierda, codigo);
+        } else if (cmp > 0) {
+            actual.derecha = eliminarRecursivo(actual.derecha, codigo);
+        } else {
+            if (actual.izquierda == null && actual.derecha == null) {
+                return null;
+            }
+            if (actual.izquierda == null) {
+                return actual.derecha;
+            }
+            if (actual.derecha == null) {
+                return actual.izquierda;
+            }
+            NodoABB sucesor = menor(actual.derecha);
+            actual.curso = sucesor.curso;
+            actual.derecha = eliminarRecursivo(actual.derecha, sucesor.curso.getCodigo());
+        }
+        return actual;
+    }
+
+    private NodoABB menor(NodoABB nodo) {
+        NodoABB actual = nodo;
+        while (actual.izquierda != null) {
+            actual = actual.izquierda;
+        }
+        return actual;
+    }
+
+    public String inorden() {
+        StringBuilder sb = new StringBuilder();
+        inordenRecursivo(raiz, sb);
+        if (sb.length() == 0) {
+            return "El árbol está vacío.";
+        }
+        return sb.toString();
+    }
+
+    private void inordenRecursivo(NodoABB actual, StringBuilder sb) {
+        if (actual != null) {
+            inordenRecursivo(actual.izquierda, sb);
+            sb.append(actual.curso.toString()).append("\n");
+            inordenRecursivo(actual.derecha, sb);
+        }
+    }
+}
