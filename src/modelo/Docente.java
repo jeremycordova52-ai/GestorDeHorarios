@@ -38,11 +38,6 @@ public class Docente {
 
     @Override
     public String toString() {
-        return String.format("""
-                Docente {
-                    codigo: %s
-                    nombre: %s
-                    especialidad: %s
-                }""", codigo, nombre, especialidad);
+        return String.format("[%s] %s - %s", codigo, nombre, especialidad);
     }
 }

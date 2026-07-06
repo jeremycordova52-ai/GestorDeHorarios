@@ -1,21 +1,21 @@
 package modelo;
 
 public class Aula {
-    private String numero;
+    private String codigo;
     private int capacidad;
 
-    public Aula(String numero, int capacidad) {
-        this.numero = numero;
+    public Aula(String codigo, int capacidad) {
+        this.codigo = codigo;
         this.capacidad = capacidad;
     }
 
     // Getter and Setter
-    public String getNumero() {
-        return numero;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public int getCapacidad() {
@@ -28,10 +28,6 @@ public class Aula {
 
     @Override
     public String toString() {
-        return String.format("""
-                Aula {
-                    numero: %s
-                    capacidad: %d
-                }""", numero, capacidad);
+        return String.format("[%s] capacidad: %d", codigo, capacidad);
     }
 }

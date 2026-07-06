@@ -38,11 +38,6 @@ public class Curso {
 
     @Override
     public String toString() {
-        return String.format("""
-                Curso {
-                    codigo: %s
-                    nombre: %s
-                    ciclo: %d
-                }""", codigo, nombre, ciclo);
+        return String.format("[%s] %s - %d", codigo, nombre, ciclo);
     }
 }

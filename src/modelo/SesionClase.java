@@ -65,6 +65,6 @@ public class SesionClase {
                     aula: %s
                     dia: %s
                     hora: %s
-                }""", curso.getNombre(), docente.getNombre(), aula.getNumero(), dia, hora);
+                }""", curso.getNombre(), docente.getNombre(), aula.getCodigo(), dia, hora);
     }
 }

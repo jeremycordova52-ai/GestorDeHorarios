@@ -1,6 +1,7 @@
-import vista.DocentesFrm;
+import sistema.Sistema;
+import vista.PrincipalFrm;
 
 void main() {
-    DocentesFrm docentesFrm = new DocentesFrm();
-    docentesFrm.mostrar();
+    Sistema.inicializar();
+    new PrincipalFrm().mostrar();
 }
