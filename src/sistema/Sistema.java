@@ -1,9 +1,6 @@
 package sistema;
 
-import gestion.GestionAulas;
-import gestion.GestionCursos;
-import gestion.GestionDocentes;
-import gestion.GestionHorarios;
+import gestion.*;
 import modelo.Aula;
 import modelo.Curso;
 import modelo.Docente;
@@ -13,6 +10,7 @@ public class Sistema {
     public static final GestionCursos gestionCursos = new GestionCursos();
     public static final GestionAulas gestionAulas = new GestionAulas(50);
     public static final GestionHorarios gestionHorarios = new GestionHorarios();
+    public static final GestionSolicitudes gestionSolicitudes = new GestionSolicitudes();
 
     public static void inicializar() {
         // Docentes

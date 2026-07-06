@@ -7,6 +7,7 @@ public class PrincipalFrm {
     private JButton horarioButton;
     private JButton cursosButton;
     private JButton docentesButton;
+    private JButton solicitudesButton;
 
     public PrincipalFrm() {
         docentesButton.addActionListener(e -> {
@@ -17,6 +18,9 @@ public class PrincipalFrm {
         });
         horarioButton.addActionListener(e -> {
             new HorariosFrm().mostrar();
+        });
+        solicitudesButton.addActionListener(e -> {
+            new SolicitudesFrm().mostrar();
         });
     }
 
