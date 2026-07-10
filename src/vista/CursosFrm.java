@@ -1,7 +1,7 @@
 package vista;
 
+import modelo.Accion;
 import modelo.Curso;
-import modelo.Docente;
 import sistema.Sistema;
 
 import javax.swing.*;
@@ -24,11 +24,25 @@ public class CursosFrm {
             String nombre = nombreTextField.getText().trim();
             int ciclo = Integer.parseInt(cicloTextField.getText());
 
-            Sistema.gestionCursos.registrar(new Curso(codigo, nombre, ciclo));
+            Curso curso = new Curso(codigo, nombre, ciclo);
+
+            if (Sistema.gestionCursos.registrar(curso)) {
+                Sistema.gestionHistorial.apilar(new Accion(
+                        "Se registró el curso "
+                                + curso.getCodigo()
+                                + " - "
+                                + curso.getNombre()
+                ));
+            }
         });
         eliminarButton.addActionListener(e -> {
             String codigo = codigoTextField.getText().trim();
-            Sistema.gestionCursos.eliminar(codigo);
+
+            if (Sistema.gestionCursos.eliminar(codigo)) {
+                Sistema.gestionHistorial.apilar(
+                        new Accion("Se eliminó el curso " + codigo)
+                );
+            }
         });
         mostrarButton.addActionListener(e -> {
             System.out.println(Sistema.gestionCursos);

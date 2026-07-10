@@ -1,10 +1,7 @@
 package vista;
 import gestion.GestionHorarios;
 import gestion.NodoCurso;
-import modelo.Aula;
-import modelo.Curso;
-import modelo.Docente;
-import modelo.SesionClase;
+import modelo.*;
 import sistema.Sistema;
 
 import javax.swing.*;
@@ -60,6 +57,19 @@ public class HorariosFrm {
 
             if (Sistema.gestionHorarios.asignarSesion(fila, columna - 1, sesion)) {
                 horarioTable.setValueAt(curso.getNombre(), fila, columna);
+
+                Sistema.gestionHistorial.apilar(new Accion(
+                        "Se asignó el curso "
+                                + curso.getNombre()
+                                + " con el docente "
+                                + docente.getNombre()
+                                + " en el aula "
+                                + aula.getCodigo()
+                                + " el "
+                                + dia
+                                + " de "
+                                + hora
+                ));
             }
         });
 
@@ -71,8 +81,21 @@ public class HorariosFrm {
                 return;
             }
 
-            if (Sistema.gestionHorarios.eliminarSesion(fila, columna - 1)) {
+            SesionClase sesion = Sistema.gestionHorarios.eliminarSesion(fila, columna - 1);
+
+            if (sesion != null) {
                 horarioTable.setValueAt("", fila, columna);
+
+                Sistema.gestionHistorial.apilar(
+                        new Accion(
+                                "Se eliminó la sesión de "
+                                        + sesion.getCurso().getNombre()
+                                        + " del "
+                                        + sesion.getDia()
+                                        + " de "
+                                        + sesion.getHora()
+                        )
+                );
             }
         });
 

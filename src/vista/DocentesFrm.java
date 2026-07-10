@@ -1,5 +1,6 @@
 package vista;
 
+import modelo.Accion;
 import modelo.Docente;
 import sistema.Sistema;
 
@@ -23,11 +24,27 @@ public class DocentesFrm {
             String nombre = nombreTextField.getText().trim();
             String especialidad = especialidadTextField.getText().trim();
 
-            Sistema.gestionDocentes.registrar(new Docente(codigo, nombre, especialidad));
+            Docente docente = new Docente(codigo, nombre, especialidad);
+
+            if (Sistema.gestionDocentes.registrar(docente)) {
+                Sistema.gestionHistorial.apilar(new Accion(
+                        "Se registró el docente "
+                                + docente.getCodigo()
+                                + " - "
+                                + docente.getNombre()
+                ));
+
+                Sistema.gestionBusquedaABB.insertar(docente);
+            }
         });
         eliminarButton.addActionListener(e -> {
             String codigo = codigoTextField.getText().trim();
-            Sistema.gestionDocentes.eliminar(codigo);
+
+            if (Sistema.gestionDocentes.eliminar(codigo)) {
+                Sistema.gestionHistorial.apilar(
+                        new Accion("Se eliminó el docente " + codigo)
+                );
+            }
         });
         mostrarButton.addActionListener(e -> {
             System.out.println(Sistema.gestionDocentes);

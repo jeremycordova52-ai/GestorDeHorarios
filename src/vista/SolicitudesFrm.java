@@ -1,13 +1,12 @@
 package vista;
 
 import gestion.NodoCurso;
+import modelo.Accion;
 import modelo.Curso;
 import modelo.Solicitud;
 import sistema.Sistema;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SolicitudesFrm {
     private JTextField codigoTextField;
@@ -16,6 +15,7 @@ public class SolicitudesFrm {
     private JButton atenderButton;
     private JComboBox cursoComboBox;
     private JPanel rootPanel;
+    private JTextArea solicitudTextArea;
 
     public SolicitudesFrm() {
         registrarButton.addActionListener(e -> {
@@ -23,12 +23,38 @@ public class SolicitudesFrm {
             String motivo = motivoTextField.getText();
             Curso curso = (Curso) cursoComboBox.getSelectedItem();
 
-            Sistema.gestionSolicitudes.encolar(new Solicitud(codigo, curso, motivo));
+            Solicitud solicitud = new Solicitud(codigo, curso, motivo);
+
+            Sistema.gestionSolicitudes.encolar(solicitud);
+
+            Sistema.gestionHistorial.apilar(new Accion(
+                    "Se registró la solicitud "
+                            + solicitud.getCodigo()
+                            + " para el curso "
+                            + solicitud.getCurso().getNombre()
+            ));
+
+            actualizarSolicitudTextArea();
         });
 
         atenderButton.addActionListener(e -> {
-            Sistema.gestionSolicitudes.desencolar();
+            Solicitud solicitud = Sistema.gestionSolicitudes.desencolar();
+
+            if (solicitud != null) {
+                Sistema.gestionHistorial.apilar(
+                        new Accion(
+                                "Se atendió la solicitud "
+                                        + solicitud.getCodigo()
+                                        + " del curso "
+                                        + solicitud.getCurso().getNombre()
+                        )
+                );
+            }
+
+            actualizarSolicitudTextArea();
         });
+
+        actualizarSolicitudTextArea();
 
         // CURSO COMBOBOX
         NodoCurso aux = Sistema.gestionCursos.getPrimero();
@@ -37,6 +63,17 @@ public class SolicitudesFrm {
             cursoComboBox.addItem(aux.getCurso());
             aux = aux.getSiguiente();
         }
+    }
+
+    public void actualizarSolicitudTextArea() {
+        Solicitud solicitud = Sistema.gestionSolicitudes.frente();
+
+        if (solicitud == null) {
+            solicitudTextArea.setText("");
+            return;
+        }
+
+        solicitudTextArea.setText(solicitud.toString());
     }
 
     public void mostrar() {

@@ -26,13 +26,14 @@ public class GestionHorarios {
         return true;
     }
 
-    public boolean eliminarSesion(int hora, int dia) {
+    public SesionClase eliminarSesion(int hora, int dia) {
         if (horario[hora][dia] == null) {
-            return false;
+            return null;
         }
 
+        SesionClase sesionClase = horario[hora][dia];
         horario[hora][dia] = null;
-        return true;
+        return sesionClase;
     }
 
     public SesionClase obtenerSesion(int hora, int dia) {

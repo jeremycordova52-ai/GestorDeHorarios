@@ -8,6 +8,8 @@ public class PrincipalFrm {
     private JButton cursosButton;
     private JButton docentesButton;
     private JButton solicitudesButton;
+    private JButton historialButton;
+    private JButton busquedaButton;
 
     public PrincipalFrm() {
         docentesButton.addActionListener(e -> {
@@ -21,6 +23,12 @@ public class PrincipalFrm {
         });
         solicitudesButton.addActionListener(e -> {
             new SolicitudesFrm().mostrar();
+        });
+        historialButton.addActionListener(e -> {
+            new HistorialFrm().mostrar();
+        });
+        busquedaButton.addActionListener(e -> {
+            new BusquedaFrm().mostrar();
         });
     }
 
